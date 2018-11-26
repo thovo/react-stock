@@ -5,7 +5,6 @@ class DataCell extends Component  {
 
     constructor(props) {
         super(props);
-        console.log(props);
     }
 
     handleInputChange(event) {
@@ -19,7 +18,7 @@ class DataCell extends Component  {
             <div className="cell">
                 { this.props.editable ?
                     (
-                        <input type="number" value={this.props.value} onChange={this.handleInputChange}/>
+                        <input type="text" value={this.props.value} onChange={this.handleInputChange}/>
                     ) : (
                         <span>{this.props.value}</span>
                     )
