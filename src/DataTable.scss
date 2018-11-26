@@ -1,0 +1,31 @@
+.data-table {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .row {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        border-bottom: 1px solid #2c3e50;
+        &.first-row {
+            border-top: 1px solid #2c3e50;
+        }
+        .cell {
+            flex: 1;
+            color: #2c3e50;
+            border-left: 1px solid #2c3e50;
+            padding: 5px;
+            span {
+                width: 100%;
+            }
+            input {
+                border: none;
+                width: 100%;
+            }
+            &:last-child {
+                border-right: 1px solid #2c3e50;
+            }
+        }
+    }
+}
