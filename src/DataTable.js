@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import './DataTable.scss';
+import {modifyDataAction} from "./actions/allActions"
+import {simpleAction} from "./actions/simpleAction";
 
 class DataCell extends Component  {
-
-    constructor(props) {
-        super(props);
-    }
-
-    handleInputChange(event) {
-        const value = event.target.value;
-        // this.setState({value: value});
-        console.log(value);
+    handleInputChange = (event) => {
+        this.props.onInputChange(this.props.index, event.target.value, this.props.name);
     }
 
     render() {
@@ -28,10 +24,11 @@ class DataCell extends Component  {
     };
 };
 
-export default class DataTable extends Component  {
-    constructor(props) {
-        super(props);
-    }
+class DataTable extends Component  {
+
+    handleInputChange = (index, value, name) => {
+        this.props.modifyDataAction(index, value, name);
+    };
 
     render() {
         return (
@@ -40,24 +37,24 @@ export default class DataTable extends Component  {
                 <div className="row first-row">
                     <div className="cell">Index</div>
                     {
-                        this.props.data.index.map((value, index) => {
-                            return <DataCell value={value} key={index} editable={false}/>;
+                        this.props.index.map((value, index) => {
+                            return <DataCell value={value} key={index}  editable={false}/>;
                         })
                     }
                 </div>
                 <div className="row second-row">
                     <div className="cell">CAC40</div>
                     {
-                        this.props.data.cac40.map((value, index) => {
-                            return <DataCell value={value} key={index} editable={true}/>;
+                        this.props.cac40.map((value, index) => {
+                            return <DataCell value={value} key={index} index={index} editable={true} onInputChange={this.handleInputChange} name="cac40"/>;
                         })
                     }
                 </div>
                 <div className="row third-row">
                     <div className="cell">NASDAQ</div>
                     {
-                        this.props.data.nasdaq.map((value, index) => {
-                            return <DataCell value={value} key={index} editable={true}/> ;
+                        this.props.nasdaq.map((value, index) => {
+                            return <DataCell value={value} key={index} index={index} editable={true} onInputChange={this.handleInputChange} name="nasdaq"/> ;
                         })
                     }
                 </div>
@@ -65,3 +62,17 @@ export default class DataTable extends Component  {
         );
     };
 };
+
+const mapStateToProps = state => {
+    return {
+        index: state.simpleReducer.index,
+        cac40: state.simpleReducer.cac40,
+        nasdaq: state.simpleReducer.nasdaq,
+    }
+};
+
+const mapDispatchToProps = dispatch => ({
+    modifyDataAction: (index, value, name) => dispatch(modifyDataAction(index, value, name)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DataTable);
