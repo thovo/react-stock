@@ -1,6 +1,6 @@
-import apiURL from "../environnment";
-export  const FETCH_DATA_ACTION = "FETCH_DATA_ACTION";
-
+import apiURL from '../environnment';
+export  const FETCH_DATA_ACTION = 'FETCH_DATA_ACTION';
+export  const MODIFY_DATA_ACTION = 'MODIFY_DATA_ACTION';
 export const fetchDataAction = () => dispatch => {
     fetch(apiURL).then(results => results.json()).then(data => {
         const index = [];
@@ -23,7 +23,7 @@ export const fetchDataAction = () => dispatch => {
 
 export const modifyDataAction = (index, value, name) => dispatch => {
     dispatch({
-        type: 'MODIFY_DATA_ACTION',
+        type: MODIFY_DATA_ACTION,
         index,
         value,
         name

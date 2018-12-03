@@ -1,4 +1,4 @@
-import {FETCH_DATA_ACTION} from "../actions/allActions";
+import {FETCH_DATA_ACTION, MODIFY_DATA_ACTION} from "../actions/allActions";
 
 const initialState = {
     index: [],
@@ -19,7 +19,7 @@ export default (state = initialState, action) => {
                 chartData: [...state.chartData, ...action.payload.chartData]
             };
 
-        case 'MODIFY_DATA_ACTION':
+        case MODIFY_DATA_ACTION:
             return {
                 ...state,
                 [action.name]: state[action.name].map((val, index) => index === action.index ? action.value : val)

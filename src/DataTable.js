@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import './DataTable.scss';
 import {modifyDataAction} from "./actions/allActions"
-import {simpleAction} from "./actions/simpleAction";
 
 class DataCell extends Component  {
     handleInputChange = (event) => {
@@ -31,13 +30,20 @@ class DataTable extends Component  {
     };
 
     render() {
+        // Display only 10 last data
+        let data = this.props;
+        while(data.index.length > 10) {
+            data.index.shift();
+            data.cac40.shift();
+            data.nasdaq.shift();
+        }
         return (
             <section className="data-table">
                 <h2>Tableau de données</h2>
                 <div className="row first-row">
                     <div className="cell">Index</div>
                     {
-                        this.props.index.map((value, index) => {
+                        data.index.map((value, index) => {
                             return <DataCell value={value} key={index}  editable={false}/>;
                         })
                     }
@@ -45,7 +51,7 @@ class DataTable extends Component  {
                 <div className="row second-row">
                     <div className="cell">CAC40</div>
                     {
-                        this.props.cac40.map((value, index) => {
+                        data.cac40.map((value, index) => {
                             return <DataCell value={value} key={index} index={index} editable={true} onInputChange={this.handleInputChange} name="cac40"/>;
                         })
                     }
@@ -53,7 +59,7 @@ class DataTable extends Component  {
                 <div className="row third-row">
                     <div className="cell">NASDAQ</div>
                     {
-                        this.props.nasdaq.map((value, index) => {
+                        data.nasdaq.map((value, index) => {
                             return <DataCell value={value} key={index} index={index} editable={true} onInputChange={this.handleInputChange} name="nasdaq"/> ;
                         })
                     }
