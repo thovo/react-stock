@@ -1,10 +1,8 @@
-import {FETCH_DATA_ACTION, MODIFY_DATA_ACTION} from "../actions/allActions";
+import {FETCH_DATA_ACTION, MODIFY_DATA_ACTION, PAUSE_CALL_DATA} from "../actions/allActions";
 
 const initialState = {
-    index: [],
-    cac40: [],
-    nasdaq: [],
-    chartData: []
+    pause: false,
+    data: []
 };
 
 
@@ -13,18 +11,32 @@ export default (state = initialState, action) => {
         case FETCH_DATA_ACTION:
             return {
                 ...state,
-                index: [...state.index, ...action.payload.index],
-                cac40: [...state.cac40, ...action.payload.cac40],
-                nasdaq: [...state.nasdaq, ...action.payload.nasdaq],
-                chartData: [...state.chartData, ...action.payload.chartData]
+                data: [...state.data, ...action.payload]
             };
 
         case MODIFY_DATA_ACTION:
             return {
                 ...state,
-                [action.name]: state[action.name].map((val, index) => index === action.index ? action.value : val)
-            };
+                pause: false,
+                data: state.data.map(d => {
+                    if (d.index === action.index) {
+                        return {
+                            ...d,
+                            stocks: {
+                                ...d.stocks,
+                                [action.name]: action.value
+                            }
+                        }
+                    }
 
+                    return d;
+                })
+            };
+        case PAUSE_CALL_DATA:
+            return {
+                ...state,
+                pause: action.value
+            };
         default:
             return state
     }

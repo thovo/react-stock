@@ -1,29 +1,45 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import './DataTable.scss';
-import {modifyDataAction} from "./actions/allActions"
+import {modifyDataAction, pauseCallData} from "./actions/allActions"
 
-class DataCell extends Component  {
-    handleInputChange = (event) => {
-        this.props.onInputChange(this.props.index, event.target.value, this.props.name);
+class DataCell extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            value: props.value
+        }
     }
 
-    render() {
-        return (
-            <div className="cell">
-                { this.props.editable ?
-                    (
-                        <input type="text" value={this.props.value} onChange={this.handleInputChange}/>
-                    ) : (
-                        <span>{this.props.value}</span>
-                    )
-                }
-            </div>
-        );
-    };
-};
+    componentWillReceiveProps(nextProps) {
+        if (this.state.value !== nextProps.value) {
+            this.setState({value: nextProps.value});
+        }
+    }
 
-class DataTable extends Component  {
+    handleInputBlur = () => {
+        this.props.onInputChange(this.props.index, this.state.value, this.props.name)
+    };
+
+    handleInputFocus = () => {
+        this.props.pauseCallData(true);
+    };
+
+    handleInputChange = (event) => {
+        this.setState({value: event.target.value});
+    };
+
+    render() {
+        if (this.props.editable)
+            return <input type="number" value={this.state.value} onChange={this.handleInputChange}
+                          onBlur={this.handleInputBlur} onFocus={this.handleInputFocus}/>;
+        else
+            return <span>{this.props.value}</span>;
+    };
+}
+
+class DataTable extends Component {
 
     handleInputChange = (index, value, name) => {
         this.props.modifyDataAction(index, value, name);
@@ -31,39 +47,33 @@ class DataTable extends Component  {
 
     render() {
         // Display only 10 last data
-        let data = this.props;
-        while(data.index.length > 10) {
-            data.index.shift();
-            data.cac40.shift();
-            data.nasdaq.shift();
-        }
+        const {data} = this.props;
         return (
             <section className="data-table">
                 <h2>Tableau de données</h2>
-                <div className="row first-row">
+                <div className="row first-row header">
                     <div className="cell">Index</div>
-                    {
-                        data.index.map((value, index) => {
-                            return <DataCell value={value} key={index}  editable={false}/>;
-                        })
-                    }
-                </div>
-                <div className="row second-row">
                     <div className="cell">CAC40</div>
-                    {
-                        data.cac40.map((value, index) => {
-                            return <DataCell value={value} key={index} index={index} editable={true} onInputChange={this.handleInputChange} name="cac40"/>;
-                        })
-                    }
-                </div>
-                <div className="row third-row">
                     <div className="cell">NASDAQ</div>
-                    {
-                        data.nasdaq.map((value, index) => {
-                            return <DataCell value={value} key={index} index={index} editable={true} onInputChange={this.handleInputChange} name="nasdaq"/> ;
-                        })
-                    }
                 </div>
+                {
+                    data.map((d, index) => {
+                        return (<div className="row" key={index}>
+                            <div className="cell">
+                                <DataCell value={d.index} key={index} editable={false}/>
+                            </div>
+                            <div className="cell">
+                                <DataCell value={d.stocks.CAC40} key={index} index={d.index} editable={true}
+                                          pauseCallData={this.props.pauseCallData}  onInputChange={this.handleInputChange} name="CAC40"/>
+                            </div>
+                            <div className="cell">
+                                <DataCell value={d.stocks.NASDAQ} key={index} index={d.index} editable={true} pauseCallData={this.props.pauseCallData}
+                                          onInputChange={this.handleInputChange} name="NASDAQ"/>
+                            </div>
+                        </div>);
+
+                    })
+                }
             </section>
         );
     };
@@ -71,14 +81,13 @@ class DataTable extends Component  {
 
 const mapStateToProps = state => {
     return {
-        index: state.simpleReducer.index,
-        cac40: state.simpleReducer.cac40,
-        nasdaq: state.simpleReducer.nasdaq,
+        data: state.simpleReducer.data
     }
 };
 
 const mapDispatchToProps = dispatch => ({
     modifyDataAction: (index, value, name) => dispatch(modifyDataAction(index, value, name)),
+    pauseCallData: (value) => dispatch(pauseCallData(value))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataTable);

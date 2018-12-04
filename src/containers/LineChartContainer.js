@@ -6,7 +6,7 @@ class LineChartContainer extends Component {
     render() {
         return (
             <ResponsiveContainer width="90%" height={500}>
-                <LineChart  data={this.props.chartData}
+                <LineChart  data={this.props.data}
                             margin={{top: 10, bottom: 50, left: 50, right: 10}}>
                         <XAxis dataKey="index"/>
                         <YAxis/>
@@ -22,7 +22,7 @@ class LineChartContainer extends Component {
 }
 
 const mapStateToProps = state => {
-    return {chartData: state.simpleReducer.chartData}
+    return {data: state.simpleReducer.data}
 };
 
 export default connect(mapStateToProps)(LineChartContainer);

@@ -10,11 +10,17 @@ class App extends Component {
     componentDidMount() {
         this.props.fetchDataAction();
 
-        // this.interval = setInterval(this.props.fetchDataAction, 1000);
+        this.handleSetInterval();
     }
 
     componentWillUnmount() {
-        // clearInterval(this.interval);
+        clearInterval(this.interval);
+    }
+
+    handleSetInterval () {
+        this.interval = setInterval(() => {
+             if(!this.props.pause) this.props.fetchDataAction();
+        }, 1000);
     }
 
     render() {
@@ -33,7 +39,9 @@ class App extends Component {
 }
 
 const mapStateToProps = state => {
-    return {chartData: state.simpleReducer.chartData}
+    return {
+        pause: state.simpleReducer.pause
+    }
 };
 
 const mapDispatchToProps = dispatch => ({
