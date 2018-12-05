@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './App.scss';
-import DataTable from './DataTable';
+import DataTable from './components/DataTable/DataTable';
 import {connect} from 'react-redux';
 import {fetchDataAction} from './actions/allActions';
 import LineChartContainer from './containers/LineChartContainer';
@@ -8,8 +8,7 @@ import LineChartContainer from './containers/LineChartContainer';
 class App extends Component {
 
     componentDidMount() {
-        this.props.fetchDataAction();
-
+        this.props.fetchDataAction(20);
         this.handleSetInterval();
     }
 
@@ -19,7 +18,7 @@ class App extends Component {
 
     handleSetInterval () {
         this.interval = setInterval(() => {
-             if(!this.props.pause) this.props.fetchDataAction();
+             if(!this.props.pause) this.props.fetchDataAction(1);
         }, 1000);
     }
 
@@ -40,12 +39,12 @@ class App extends Component {
 
 const mapStateToProps = state => {
     return {
-        pause: state.simpleReducer.pause
+        pause: state.mainReducer.pause
     }
 };
 
 const mapDispatchToProps = dispatch => ({
-    fetchDataAction: () => dispatch(fetchDataAction())
+    fetchDataAction: (count) => dispatch(fetchDataAction(count))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -1,18 +1,22 @@
+body {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 16px;
+}
 .stock-application {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  font-size: 16px;
   align-items: center;
   h1 {
     font-size: 2rem;
-    color: #2980b9;
+    color: #3498db;
     font-weight: bold;
   }
   .container {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
   }
 }

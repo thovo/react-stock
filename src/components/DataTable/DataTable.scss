@@ -3,6 +3,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    color: #2c3e50;
     .row {
         display: flex;
         justify-content: space-between;
@@ -18,10 +19,12 @@
             padding: 5px;
             span {
                 width: 100%;
+                font-size: 0.75rem;
             }
             input {
                 border: none;
                 width: 100%;
+                font-size: 0.75rem;
             }
             &:last-child {
                 border-right: 1px solid #2c3e50;

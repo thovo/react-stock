@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import './DataTable.scss';
-import {modifyDataAction, pauseCallData} from "./actions/allActions"
+import {modifyDataAction, pauseCallData} from "../../actions/allActions"
 
 class DataCell extends Component {
     constructor(props) {
@@ -46,7 +46,6 @@ class DataTable extends Component {
     };
 
     render() {
-        // Display only 10 last data
         const {data} = this.props;
         return (
             <section className="data-table">
@@ -81,7 +80,7 @@ class DataTable extends Component {
 
 const mapStateToProps = state => {
     return {
-        data: state.simpleReducer.data
+        data: state.mainReducer.data
     }
 };
 

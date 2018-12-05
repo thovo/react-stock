@@ -3,8 +3,9 @@ import apiURL from '../environnment';
 export const FETCH_DATA_ACTION = 'FETCH_DATA_ACTION';
 export const MODIFY_DATA_ACTION = 'MODIFY_DATA_ACTION';
 export const PAUSE_CALL_DATA = 'PAUSE_CALL_DATA';
-export const fetchDataAction = () => dispatch => {
-    fetch(apiURL).then(results => results.json()).then(data => {
+export const fetchDataAction = (count) => dispatch => {
+    const url = `${apiURL}?count=${count}`;
+    fetch(url).then(results => results.json()).then(data => {
         dispatch({
             type: FETCH_DATA_ACTION,
             payload: data
